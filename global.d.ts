@@ -1,4 +1,5 @@
 import type { Webflow } from '@finsweet/ts-utils';
+import type { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export type SCRIPTS_ENV = 'dev' | 'prod';
 
@@ -16,6 +17,9 @@ declare global {
      * A wrapper function to directly console log when debug mode is active
      */
     DEBUG: (...args: any[]) => void;
+
+    gsap: GSAP;
+    ScrollTrigger: typeof ScrollTrigger;
   }
 
   // Extend `querySelector` and `querySelectorAll` function to stop the nagging of converting `Element` to `HTMLElement` all the time

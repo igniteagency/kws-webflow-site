@@ -1,32 +1,39 @@
-const ITEM_SELECTOR = '[data-el="accordion"]';
+/** Set [data-el="nav-menu-item"] on each accordion trigger */
+
+const ITEM_SELECTOR = '[data-el="nav-menu-item"]';
 const TOGGLE_SELECTOR = 'summary';
 const CONTENT_SELECTOR = 'summary + div';
 
 const ANIMATION_DURATION_IN_MS = 300;
-/**
- * If set to true, will close all other accordions when one is opened
- */
-const CLOSE_OTHER_ACCORDIONS = true;
 
-export function animatedDetailsAccordions() {
+export function initNavMenuAccordions() {
   const accordionsList = document.querySelectorAll<HTMLDetailsElement>(ITEM_SELECTOR);
-  accordionsList.forEach((accordion) => {
-    const accordionToggleEl = accordion.querySelector(TOGGLE_SELECTOR);
-    const accordionContentEl = accordion.querySelector(CONTENT_SELECTOR);
+
+  const isTabletAndBelow = window.matchMedia('max-width: 991px');
+
+  accordionsList.forEach((accordionEl) => {
+    const accordionToggleEl = accordionEl.querySelector(TOGGLE_SELECTOR);
+    const accordionContentEl = accordionEl.querySelector(CONTENT_SELECTOR);
 
     if (!accordionToggleEl || !accordionContentEl) {
       console.error('Accordion toggle or content not found', accordionToggleEl, accordionContentEl);
       return;
     }
 
+    if (!isTabletAndBelow) {
+      return;
+    }
+
+    /** Height open animation on tablet and below screens */
     accordionToggleEl.addEventListener('click', (event) => {
       event.preventDefault();
-      const isOpening = !accordion.open;
+
+      const isOpening = !accordionEl.open;
 
       if (isOpening) {
         const height = accordionContentEl.scrollHeight;
         accordionContentEl.style.height = '0px';
-        accordion.open = true;
+        accordionEl.open = true;
         accordionContentEl.animate([{ height: '0px' }, { height: `${height}px` }], {
           duration: ANIMATION_DURATION_IN_MS,
           fill: 'forwards',
@@ -34,13 +41,11 @@ export function animatedDetailsAccordions() {
           accordionContentEl.style.height = 'auto';
         };
 
-        if (CLOSE_OTHER_ACCORDIONS) {
-          accordionsList.forEach((otherAccordion) => {
-            if (otherAccordion !== accordion && otherAccordion.open) {
-              otherAccordion.querySelector(TOGGLE_SELECTOR)?.click();
-            }
-          });
-        }
+        accordionsList.forEach((otherAccordion) => {
+          if (otherAccordion !== accordionEl && otherAccordion.open) {
+            otherAccordion.querySelector(TOGGLE_SELECTOR)?.click();
+          }
+        });
       } else {
         const height = accordionContentEl.scrollHeight;
         const animation = accordionContentEl.animate(
@@ -52,7 +57,7 @@ export function animatedDetailsAccordions() {
         );
 
         animation.onfinish = () => {
-          accordion.open = false;
+          accordionEl.open = false;
           accordionContentEl.style.height = '';
         };
       }
