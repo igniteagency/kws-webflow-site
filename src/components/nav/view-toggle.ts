@@ -58,11 +58,6 @@ function staticNavSetter(navEl: HTMLElement) {
         } else {
           navEl.classList.add(NAV_STATIC_CLASS);
         }
-        return;
-
-        if (entry.intersectionRatio > 0) {
-        } else {
-        }
       });
     },
     {
