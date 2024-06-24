@@ -1,4 +1,4 @@
-const ITEM_SELECTOR = 'details';
+const ITEM_SELECTOR = '[data-el="accordion"]';
 const TOGGLE_SELECTOR = 'summary';
 const CONTENT_SELECTOR = 'summary + div';
 
