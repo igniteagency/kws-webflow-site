@@ -8,8 +8,6 @@ export function textReveal() {
     return;
   }
 
-  console.debug({ paragraphEl });
-
   window.gsap.set(paragraphEl, { backgroundSize: '0% 100%' });
 
   const tl = window.gsap.timeline({
