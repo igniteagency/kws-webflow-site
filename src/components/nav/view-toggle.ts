@@ -52,7 +52,6 @@ function staticNavSetter(navEl: HTMLElement) {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        console.debug('intersection!', entry.intersectionRatio);
         if (entry.isIntersecting) {
           navEl.classList.remove(NAV_STATIC_CLASS);
         } else {
