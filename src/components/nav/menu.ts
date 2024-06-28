@@ -21,6 +21,13 @@ export function initNavMenuAccordions() {
     }
 
     if (!isTabletAndBelow) {
+      accordionEl.addEventListener('toggle', () => {
+        if (accordionEl.open) {
+          console.debug('already open');
+          return;
+        }
+      });
+
       return;
     }
 
