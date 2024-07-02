@@ -46,7 +46,7 @@ export function initBGColorChange() {
         });
       },
       {
-        threshold: 0.2, // Trigger when 20% of the target is visible
+        threshold: 0.3, // Trigger when 30% of the target is visible
       }
     );
 
