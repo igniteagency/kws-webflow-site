@@ -1,1 +1,1 @@
-"use strict";(()=>{var t="scriptsLoaded";var r='[data-el="hero-intro-text"]';function e(){let o=document.querySelector(r);if(!o){console.debug("Home intro paragraph not found");return}window.gsap.set(o,{backgroundSize:"0% 100%"}),window.gsap.timeline({scrollTrigger:{trigger:o,start:"top 70%",end:"bottom 30%",scrub:!0,id:"home-intro",markers:window.IS_DEBUG_MODE}}).fromTo(o,{backgroundSize:"0% 100%"},{backgroundSize:"110% 100%"})}window.addEventListener(t,()=>{e()});})();
+"use strict";(()=>{var E="scriptsLoaded";window.addEventListener(E,()=>{});})();
