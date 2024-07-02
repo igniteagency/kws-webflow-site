@@ -52,16 +52,10 @@ function staticNavSetter(navEl: HTMLElement) {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        console.debug('intersection!', entry.intersectionRatio);
         if (entry.isIntersecting) {
           navEl.classList.remove(NAV_STATIC_CLASS);
         } else {
           navEl.classList.add(NAV_STATIC_CLASS);
-        }
-        return;
-
-        if (entry.intersectionRatio > 0) {
-        } else {
         }
       });
     },
