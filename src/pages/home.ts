@@ -1,9 +1,11 @@
 import { SCRIPTS_LOADED_EVENT } from 'src/constants';
 
+import { initNewsSlider } from '$components/home/news-slider';
 import { TabAutoplay } from '$components/tabs-autoplay';
 
 window.addEventListener(SCRIPTS_LOADED_EVENT, () => {
   initTabAutoplay();
+  initNewsSlider();
 });
 
 function initTabAutoplay() {
