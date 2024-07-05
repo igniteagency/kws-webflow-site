@@ -1,6 +1,7 @@
 import { TABS_CSS_CLASSES } from '@finsweet/ts-utils';
 
 export class TabAutoplay {
+  private tabComponent: HTMLElement;
   private tabs: NodeListOf<HTMLElement>;
   /** Sets height animation if a selector is passed */
   private descriptionWrapperSelector?: string;
@@ -10,6 +11,7 @@ export class TabAutoplay {
   private currentIndex: number = 0;
 
   constructor(tabComponent: HTMLElement, interval?: number, descriptionWrapperSelector?: string) {
+    this.tabComponent = tabComponent;
     this.tabs = tabComponent.querySelectorAll(`.${TABS_CSS_CLASSES.tabLink}`);
     this.interval = interval || this.defaultInterval;
     this.descriptionWrapperSelector = descriptionWrapperSelector;
@@ -24,7 +26,30 @@ export class TabAutoplay {
 
   private init(): void {
     this.addEventListeners();
-    this.startAutoplay();
+
+    // start and pause when main element comes in and out of view, using intersection observer
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (entry.intersectionRatio < 0.2) {
+              // Temp click to start the first tab again when it comes into view
+              this.onTabClick(1);
+            } else {
+              this.onTabClick(0);
+            }
+          } else {
+            this.resetAutoplay();
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: [0, 0.2],
+      }
+    );
+    observer.observe(this.tabComponent);
   }
 
   private addEventListeners(): void {
@@ -35,10 +60,10 @@ export class TabAutoplay {
     });
   }
 
-  private onTabClick(index: number, ev: MouseEvent): void {
+  private onTabClick(index: number, ev?: MouseEvent): void {
     this.deactivateCurrentTab();
     this.currentIndex = index;
-    this.activateTab(index, !ev.isTrusted);
+    this.activateTab(index, !ev?.isTrusted || true);
     this.resetAutoplay();
   }
 
