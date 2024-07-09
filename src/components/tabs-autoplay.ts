@@ -21,6 +21,11 @@ export class TabAutoplay {
       return;
     }
 
+    if (this.tabs.length === 1) {
+      console.debug('Only one tab found, not running autoplay', { tabComponent });
+      return;
+    }
+
     this.init();
   }
 
@@ -67,6 +72,7 @@ export class TabAutoplay {
     this.resetAutoplay();
   }
 
+  // TODO: pause autoplay if the tab is already hovered before it becoming active
   private startAutoplay(): void {
     this.animation = new Animation(
       new KeyframeEffect(null, [{ opacity: 0 }, { opacity: 1 }], {

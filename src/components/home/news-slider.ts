@@ -1,5 +1,5 @@
 import Swiper from 'swiper';
-import { Navigation, Pagination, EffectCreative, Grid } from 'swiper/modules';
+import { Navigation, Pagination, EffectCreative, A11y } from 'swiper/modules';
 
 export function initNewsSlider() {
   const SELECTOR = '[data-el="news-slider"]';
@@ -11,7 +11,7 @@ export function initNewsSlider() {
   }
 
   const swiper = new Swiper(componentEl, {
-    modules: [Navigation, Pagination, EffectCreative, Grid],
+    modules: [Navigation, Pagination, EffectCreative, A11y],
     effect: 'creative',
     loop: true,
     loopAddBlankSlides: true,
@@ -29,7 +29,14 @@ export function initNewsSlider() {
         translate: ['108%', 0, 0], // Move next slides to the right
       },
       limitProgress: 8,
-      // progressMultiplier: 1,
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
     },
   });
 }
