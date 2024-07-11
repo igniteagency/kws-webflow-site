@@ -59,9 +59,12 @@ export class TabAutoplay {
 
   private addEventListeners(): void {
     this.tabs.forEach((tab, index) => {
-      tab.addEventListener('click', (ev) => this.onTabClick(index, ev));
-      tab.addEventListener('mouseenter', () => this.pauseAutoplay(index));
-      tab.addEventListener('mouseleave', () => this.resumeAutoplay(index));
+      tab.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        this.onTabClick(index, ev);
+      });
+      tab.addEventListener('pointerenter', () => this.pauseAutoplay(index));
+      tab.addEventListener('pointerleave', () => this.resumeAutoplay(index));
     });
   }
 

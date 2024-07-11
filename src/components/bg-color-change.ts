@@ -14,7 +14,16 @@ const allClassNamesList = Object.keys(CLASSES_MAP).map((color) =>
   getBodyClass(color as ColorNames)
 );
 
+const LANDSCAPE_ANIM_ENTRY_THRESHOLD = 0.3; /* when 30% of the viewport visible on desktop */
+const PORTRAIT_ANIM_ENTRY_THRESHOLD = 0.5; /* when 50% of viewport is visible on mobile */
+
 export function initBGColorChange() {
+  // when width is greater than viewport height
+  const threshold =
+    window.innerWidth > window.innerHeight
+      ? LANDSCAPE_ANIM_ENTRY_THRESHOLD
+      : PORTRAIT_ANIM_ENTRY_THRESHOLD;
+
   Object.keys(CLASSES_MAP).forEach((color) => {
     const colorName = color as ColorNames;
     const SECTION_BG_CLASSNAME = CLASSES_MAP[colorName];
@@ -71,7 +80,7 @@ export function initBGColorChange() {
         });
       },
       {
-        threshold: 0.3, // Trigger when 30% of the target is visible
+        threshold: threshold, // Trigger when 30% of the target is visible
       }
     );
 
