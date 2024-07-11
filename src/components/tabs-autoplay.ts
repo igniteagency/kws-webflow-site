@@ -58,10 +58,15 @@ export class TabAutoplay {
   }
 
   private addEventListeners(): void {
+    const isFinePointerDevice = window.matchMedia('(pointer: fine)').matches;
+
     this.tabs.forEach((tab, index) => {
       tab.addEventListener('click', (ev) => this.onTabClick(index, ev));
-      tab.addEventListener('mouseenter', () => this.pauseAutoplay(index));
-      tab.addEventListener('mouseleave', () => this.resumeAutoplay(index));
+
+      if (isFinePointerDevice) {
+        tab.addEventListener('mouseenter', () => this.pauseAutoplay(index));
+        tab.addEventListener('mouseleave', () => this.resumeAutoplay(index));
+      }
     });
   }
 
