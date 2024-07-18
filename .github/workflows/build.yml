@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  tag:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -29,6 +29,13 @@ jobs:
 
       - name: Build project
         run: bun run build
+
+      - name: Commit and push if dist folder changed
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add dist
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update production build" && git push)
 
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.67.0

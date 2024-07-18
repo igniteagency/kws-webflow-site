@@ -2,8 +2,8 @@ import esbuild from 'esbuild';
 import fs from 'fs';
 import path from 'path';
 
-const DEV_BUILD_PATH = './dist/dev';
-const PROD_BUILD_PATH = './dist/prod';
+const DEV_BUILD_PATH = './localhost';
+const PROD_BUILD_PATH = './dist';
 const production = process.env.NODE_ENV === 'production';
 
 const BUILD_DIRECTORY = !production ? DEV_BUILD_PATH : PROD_BUILD_PATH;
@@ -37,7 +37,11 @@ const deleteDirectoryContents = (dirPath) => {
 };
 
 // Clean the build directory before starting the build
-deleteDirectoryContents(BUILD_DIRECTORY);
+try {
+  deleteDirectoryContents(BUILD_DIRECTORY);
+} catch (e) {
+  console.error('Unable to delete dist directory contents', e);
+}
 
 if (!production) {
   let ctx = await esbuild.context(buildSettings);
@@ -49,5 +53,9 @@ if (!production) {
 
   console.log(`Serving at http://localhost:${port}`);
 } else {
-  esbuild.build(buildSettings).catch(() => process.exit(1));
+  console.log('Building production files...');
+  esbuild.build(buildSettings).catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
 }
