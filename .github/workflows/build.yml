@@ -45,7 +45,10 @@ jobs:
           GIT_API_TAGGING: false # Fix for tag push reference error
           WITH_V: false # If you want your tag to start with 'v', e.g., v1.0.0
 
-      - name: Wait for jsDelivr to update and purge cache
+      - name: Install jq # JSON parser
+        run: sudo apt-get install jq -y
+
+      - name: Purge JSDelivr Cache
         run: |
           echo "Waiting for 30 seconds..."
           sleep 30
@@ -53,34 +56,22 @@ jobs:
           PURGE_URL="https://purge.jsdelivr.net/gh/${{ github.repository }}@latest/dist/"
           echo "Sending purge request to: $PURGE_URL"
 
-          # Perform curl request and capture output and status code
-          HTTP_RESPONSE=$(curl -s -o response.txt -w "%{http_code}" -X POST "$PURGE_URL")
+          # Perform curl request with GET method and capture output and status code
+          HTTP_RESPONSE=$(curl -s -o response.txt -w "%{http_code}" "$PURGE_URL")
 
           # Print the response body and status code
           echo "Response body:"
           cat response.txt
           echo "HTTP status code: $HTTP_RESPONSE"
 
+          # Parse the JSON response
+          PURGE_STATUS=$(jq -r '.status' response.txt)
+          PURGE_ID=$(jq -r '.id' response.txt)
+
           # Check if the request was successful
-          if [ $HTTP_RESPONSE -eq 200 ]; then
-            echo "Cache purge request sent successfully."
+          if [ $HTTP_RESPONSE -eq 200 ] && [ "$PURGE_STATUS" = "finished" ]; then
+            echo "Cache purge request sent successfully. Purge ID: $PURGE_ID"
           else
-            echo "Error: Cache purge request failed with status code $HTTP_RESPONSE"
+            echo "Error: Cache purge request failed. Status code: $HTTP_RESPONSE, Purge status: $PURGE_STATUS"
             exit 1
-          fi
-
-      - name: Verify cache purge
-        run: |
-          echo "Verifying cache purge..."
-          VERIFY_URL="https://cdn.jsdelivr.net/gh/${{ github.repository }}@latest/dist/"
-          echo "Checking URL: $VERIFY_URL"
-
-          response=$(curl -s -o /dev/null -w "%{http_code}" "$VERIFY_URL")
-          echo "Verification HTTP status code: $response"
-
-          if [ $response -eq 200 ]; then
-            echo "Cache purge verification successful. New versions should now be available on jsDelivr."
-          else
-            echo "Warning: Cache purge verification returned status code $response. Please check manually."
-            # Not exiting with error here as this might be due to CDN propagation delay
           fi
