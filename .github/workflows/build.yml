@@ -62,7 +62,8 @@ jobs:
           # Print the response body and status code
           echo "Response body:"
           cat response.txt
-          echo "\nHTTP status code: $HTTP_RESPONSE"
+          echo ""
+          echo "HTTP status code: $HTTP_RESPONSE"
 
           # Parse the JSON response
           PURGE_STATUS=$(jq -r '.status' response.txt)
