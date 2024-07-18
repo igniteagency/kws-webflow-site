@@ -21,7 +21,7 @@ On starting, update the repo name and URL in this README file, and the `./bin/bu
 
 ### Output
 
-The project will process and output the files mentioned in the `files` const of `./bin/build.js` file. The output minified files will be in the `./dist/prod` folder for production (pushed to github), and in the `./dist/dev` used for local file serving.
+The project will process and output the files mentioned in the `files` const of `./bin/build.js` file. The output minified files will be in the `./dist` folder for production (pushed to github), and in the `./localhost` used for local file serving.
 
 **Keep the repository public for jsDelivr to access and serve the file via CDN**
 
@@ -30,7 +30,7 @@ The project will process and output the files mentioned in the `files` const of 
 1. The initial `entry.js` file needs to be made available via external server first for this system to work (in the `<head>` area of the site).
 
    ```html
-   <script src="https://cdn.jsdelivr.net/gh/igniteagency/kws-webflow-site/dist/prod/entry.js"></script>
+   <script src="https://cdn.jsdelivr.net/gh/igniteagency/kws-webflow-site@latest/dist/entry.js"></script>
    ```
 
    For occasional localhost testing when editing `entry.js`, you'll have to manually include that script like following:
@@ -88,7 +88,7 @@ There is an opt-in debugging setup that turns on logs in the console. The prefer
 #### jsDelivr Notes & Caveats
 
 - Direct jsDelivr links directly use semver tagged releases when available, else falls back to the master branch [[info discussion link](https://github.com/jsdelivr/jsdelivr/issues/18376#issuecomment-1046876129)]
-- Tagged version branches are purged every 12 hours from their servers [[info discussion link](https://github.com/jsdelivr/jsdelivr/issues/18376#issuecomment-1046918481)]
+- Latest tagged version branches are cached for 7 days on their servers [[info discussion link](https://www.jsdelivr.com/documentation#id-caching)]
 - To manually purge a tagged version's files, wait for 10 minutes after the new release tag is added [[info discussion link](https://github.com/jsdelivr/jsdelivr/issues/18376#issuecomment-1047040896)]
 
 [**JSDelivr CDN Purge URL**](https://www.jsdelivr.com/tools/purge)
