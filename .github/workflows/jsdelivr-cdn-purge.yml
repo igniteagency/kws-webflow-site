@@ -3,8 +3,9 @@ name: Purge JSDelivr Cache
 on:
   workflow_run:
     workflows: ['Build production files and bump version']
-    types:
-      - completed
+    types: ['completed']
+    branches:
+      - main
 
 jobs:
   purge:
