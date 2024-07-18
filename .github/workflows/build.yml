@@ -44,35 +44,3 @@ jobs:
           DEFAULT_BUMP: patch # Can be set to major, minor, or patch
           GIT_API_TAGGING: false # Fix for tag push reference error
           WITH_V: false # If you want your tag to start with 'v', e.g., v1.0.0
-
-      - name: Install jq # JSON parser
-        run: sudo apt-get install jq -y
-
-      - name: Purge JSDelivr Cache
-        run: |
-          echo "Waiting for 30 seconds..."
-          sleep 30
-          echo "Purging jsDelivr cache for all files under dist..."
-          PURGE_URL="https://purge.jsdelivr.net/gh/${{ github.repository }}@latest/dist/"
-          echo "Sending purge request to: $PURGE_URL"
-
-          # Perform curl request with GET method and capture output and status code
-          HTTP_RESPONSE=$(curl -s -o response.txt -w "%{http_code}" "$PURGE_URL")
-
-          # Print the response body and status code
-          echo "Response body:"
-          cat response.txt
-          echo ""
-          echo "HTTP status code: $HTTP_RESPONSE"
-
-          # Parse the JSON response
-          PURGE_STATUS=$(jq -r '.status' response.txt)
-          PURGE_ID=$(jq -r '.id' response.txt)
-
-          # Check if the request was successful
-          if [ $HTTP_RESPONSE -eq 200 ] && [ "$PURGE_STATUS" = "finished" ]; then
-            echo "Cache purge request sent successfully. Purge ID: $PURGE_ID"
-          else
-            echo "Error: Cache purge request failed. Status code: $HTTP_RESPONSE, Purge status: $PURGE_STATUS"
-            exit 1
-          fi
