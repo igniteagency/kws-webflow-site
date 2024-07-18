@@ -37,7 +37,11 @@ const deleteDirectoryContents = (dirPath) => {
 };
 
 // Clean the build directory before starting the build
-deleteDirectoryContents(BUILD_DIRECTORY);
+try {
+  deleteDirectoryContents(BUILD_DIRECTORY);
+} catch (e) {
+  console.error('Unable to delete dist directory contents', e);
+}
 
 if (!production) {
   let ctx = await esbuild.context(buildSettings);
@@ -49,5 +53,6 @@ if (!production) {
 
   console.log(`Serving at http://localhost:${port}`);
 } else {
+  console.log('Building production files...');
   esbuild.build(buildSettings).catch(() => process.exit(1));
 }
