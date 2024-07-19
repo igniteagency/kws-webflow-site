@@ -24,6 +24,8 @@ export function initBGColorChange() {
       ? LANDSCAPE_ANIM_ENTRY_THRESHOLD
       : PORTRAIT_ANIM_ENTRY_THRESHOLD;
 
+  const thresholdPercent = threshold * 100;
+
   Object.keys(CLASSES_MAP).forEach((color) => {
     const colorName = color as ColorNames;
     const SECTION_BG_CLASSNAME = CLASSES_MAP[colorName];
@@ -36,56 +38,25 @@ export function initBGColorChange() {
 
     const currentBodyClass = getBodyClass(colorName as ColorNames);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            allClassNamesList.forEach((eachBodyClass) => {
-              // Bail removal if the new class addition is the same as the existing class
-              if (currentBodyClass == eachBodyClass) return;
-              document.body.classList.remove(eachBodyClass);
-            });
-
-            if (document.body.classList.contains(currentBodyClass)) {
-              return;
-            }
-            document.body.classList.add(currentBodyClass);
-          } else {
-            // do not remove existing background color class when the previous or next section (depending on entry/exit) has the same BG color change
-            if (entry.boundingClientRect.y < 0) {
-              // page scroll down, section going up, out of view
-              const nextSiblingSectionEl = entry.target.nextElementSibling;
-              if (
-                nextSiblingSectionEl &&
-                nextSiblingSectionEl.classList.contains(SECTION_BG_CLASSNAME)
-              ) {
-                return;
-              }
-            } else {
-              // page scroll up, section going down, out of view
-              const previousSiblingSectionEl = entry.target.previousElementSibling;
-              if (
-                previousSiblingSectionEl &&
-                previousSiblingSectionEl.classList.contains(SECTION_BG_CLASSNAME)
-              ) {
-                return;
-              }
-            }
-
-            if (!document.body.classList.contains(currentBodyClass)) {
-              return;
-            }
-            document.body.classList.remove(currentBodyClass);
-          }
-        });
-      },
-      {
-        threshold: threshold, // Trigger when 30% of the target is visible
-      }
-    );
-
-    elList.forEach((bgChangeEl) => {
-      observer.observe(bgChangeEl);
+    // implement with gsap scrolltrigger using onenter, etc. functions
+    elList.forEach((sectionEl) => {
+      window.ScrollTrigger.create({
+        trigger: sectionEl,
+        start: `top ${100 - thresholdPercent}%`,
+        end: `bottom ${100 - thresholdPercent}%`,
+        onEnter: () => {
+          document.body.classList.add(currentBodyClass);
+        },
+        onLeave: () => {
+          document.body.classList.remove(currentBodyClass);
+        },
+        onEnterBack: () => {
+          document.body.classList.add(currentBodyClass);
+        },
+        onLeaveBack: () => {
+          document.body.classList.remove(currentBodyClass);
+        },
+      });
     });
   });
 }
