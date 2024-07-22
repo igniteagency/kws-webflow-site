@@ -10,7 +10,7 @@ export function initNewsSlider() {
     return;
   }
 
-  const swiper = new Swiper(componentEl, {
+  new Swiper(componentEl, {
     modules: [Navigation, Pagination, EffectCreative, A11y],
     effect: 'creative',
     loop: true,
