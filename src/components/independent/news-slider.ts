@@ -1,7 +1,12 @@
+import { SCRIPTS_LOADED_EVENT } from 'src/constants';
 import Swiper from 'swiper';
 import { Navigation, Pagination, EffectCreative, A11y } from 'swiper/modules';
 
-export function initNewsSlider() {
+window.addEventListener(SCRIPTS_LOADED_EVENT, () => {
+  initNewsSlider();
+});
+
+function initNewsSlider() {
   const SELECTOR = '[data-el="news-slider"]';
   const componentEl = document.querySelector(SELECTOR);
 
@@ -10,7 +15,7 @@ export function initNewsSlider() {
     return;
   }
 
-  const swiper = new Swiper(componentEl, {
+  new Swiper(componentEl, {
     modules: [Navigation, Pagination, EffectCreative, A11y],
     effect: 'creative',
     loop: true,
