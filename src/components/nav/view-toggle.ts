@@ -1,6 +1,6 @@
 /** Toggles the display of nav based on page scroll */
 const NAV_SELECTOR = '[data-el="nav"]';
-const NAV_SHOW_CLASS = 'is-shown';
+const NAV_HIDE_CLASS = 'is-hidden';
 const NAV_STATIC_CLASS = 'is-sticky';
 
 const NAV_TYPE_CHANGE_TRIGGER_SELECTOR = '[data-el="nav-type-change-trigger"]';
@@ -23,10 +23,10 @@ function navToggleOnScroll(navEl: HTMLElement) {
     onUpdate: (self) => {
       if (self.direction === -1) {
         // scrolled up
-        navEl.classList.add(NAV_SHOW_CLASS);
+        navEl.classList.remove(NAV_HIDE_CLASS);
       } else {
         // scrolled down
-        navEl.classList.remove(NAV_SHOW_CLASS);
+        navEl.classList.add(NAV_HIDE_CLASS);
       }
     },
   });
