@@ -36,22 +36,17 @@ export class TabAutoplay {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            if (entry.intersectionRatio < 0.2) {
-              // Temp click to start the first tab again when it comes into view
-              this.onTabClick(1);
-            } else {
-              this.onTabClick(0);
+          if (entry.isIntersecting && entry.intersectionRatio > 0.1) {
+            if (0 === this.currentIndex) {
+              return;
             }
-          } else {
-            this.resetAutoplay();
+            this.onTabClick(0);
           }
         });
       },
       {
         root: null,
-        rootMargin: '0px',
-        threshold: [0, 0.2],
+        threshold: [0.1],
       }
     );
     observer.observe(this.tabComponent);
