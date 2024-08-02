@@ -1,0 +1,1 @@
+"use strict";(()=>{var t="scriptsLoaded";window.addEventListener(t,()=>{a()});function a(){let e='[data-el="search-term"]',o=document.querySelector(e);if(!o){console.debug("Search term placeholder not found",`Looking for ${e}`);return}let r=new URLSearchParams(window.location.search).get("q");r&&(o.textContent=r)}})();
