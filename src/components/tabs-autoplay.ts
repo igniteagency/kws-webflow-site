@@ -38,6 +38,10 @@ export class TabAutoplay {
         entries.forEach((entry) => {
           if (entry.isIntersecting && entry.intersectionRatio > 0.1) {
             if (0 === this.currentIndex) {
+              if (!this.animation) {
+                this.startAutoplay();
+              }
+
               return;
             }
             this.onTabClick(0);
