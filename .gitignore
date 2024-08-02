@@ -12,4 +12,3 @@ pnpm-lock.yaml
 bun.lockb
 localhost
 .DS_Store
-dist
