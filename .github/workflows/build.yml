@@ -34,7 +34,7 @@ jobs:
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add dist
+          git add -f dist  # Use -f flag to force add ignored files
           git diff --quiet && git diff --staged --quiet || (git commit -m "Update production build" && git push)
 
       - name: Bump version and push tag
