@@ -2,8 +2,8 @@
  * Image Lightbox with Slider
  */
 import { SCRIPTS_LOADED_EVENT } from 'src/constants';
-
-// NOTE: initialise and destroy the slider instance everytime the <dialog> is opened and closed
+import Swiper from 'swiper';
+import { Navigation, EffectFade, A11y } from 'swiper/modules';
 
 const DATA_COMPONENT_SELECTOR = '[data-el="image-lightbox-component"]';
 
@@ -36,9 +36,29 @@ function initImageLightboxes() {
       return;
     }
 
+    const imagesList = imagesWrapperEl.children;
+    let swiperInstance: Swiper | null = null;
+
     openTriggersList.forEach((openTriggerEl) => {
       openTriggerEl.addEventListener('click', () => {
         dialogEl.showModal();
+
+        if (imagesList.length > 1) {
+          const swiperParentEl = imagesWrapperEl.parentElement as HTMLElement;
+
+          swiperInstance = new Swiper(swiperParentEl, {
+            modules: [Navigation, EffectFade, A11y],
+            effect: 'fade',
+            loop: true,
+            fadeEffect: {
+              crossFade: true,
+            },
+            navigation: {
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev',
+            },
+          });
+        }
       });
     });
 
@@ -46,6 +66,12 @@ function initImageLightboxes() {
       closeTriggerEl.addEventListener('click', () => {
         dialogEl.close();
       });
+    });
+
+    dialogEl.addEventListener('close', () => {
+      if (swiperInstance) {
+        swiperInstance.destroy();
+      }
     });
   });
 }
