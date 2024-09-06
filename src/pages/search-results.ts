@@ -13,7 +13,7 @@ function loadSearchTerm() {
   }
 
   const searchParams = new URLSearchParams(window.location.search);
-  const searchTerm = searchParams.get('q');
+  const searchTerm = searchParams.get('query');
   if (searchTerm) {
     el.textContent = searchTerm;
   }
