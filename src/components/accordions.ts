@@ -31,7 +31,7 @@ export function animatedDetailsAccordions() {
           duration: ANIMATION_DURATION_IN_MS,
           fill: 'forwards',
         }).onfinish = () => {
-          accordionContentEl.style.height = 'auto';
+          accordionContentEl.style.height = '';
         };
 
         if (CLOSE_OTHER_ACCORDIONS) {
