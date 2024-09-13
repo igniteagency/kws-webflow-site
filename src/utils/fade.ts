@@ -17,6 +17,7 @@ const FADE_DEFAULT_STAGGER_DELAY_MS = 150;
  * Add `data-fade-delay-ms="100"` to add delay to the animation in 100 milliseconds. Set the delay value as required. No delay by default.
  * Add `data-fade-stagger=""` to apply staggered fade on all its direct children.
  * Add `data-fade-stagger-delay-ms="100"` to control the time between stagger. Defaults to 300ms
+ * Add `data-fade-stagger-exclude` to exclude a child element from stagger fade in effect
  */
 export function fadeUp() {
   const fadeUpElList = document.querySelectorAll(`[${FADE_ATTR}]`);
@@ -29,7 +30,9 @@ export function fadeUp() {
     if (!isStagger) {
       fadeUpAnimation(el, undefined, false, isStill, delay);
     } else {
-      const animatingEl = Array.from(el.children);
+      const animatingEl = Array.from(el.children).filter(
+        (el) => !el.hasAttribute('data-fade-stagger-exclude')
+      );
       fadeUpAnimation(animatingEl, el, true, isStill, delay);
     }
   });
