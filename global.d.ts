@@ -22,6 +22,8 @@ declare global {
     ScrollTrigger: typeof ScrollTrigger;
 
     loadExternalScript(url: string, placement: 'head' | 'body', defer: boolean): void;
+
+    Alpine: Alpine;
   }
 
   // Extend `querySelector` and `querySelectorAll` function to stop the nagging of converting `Element` to `HTMLElement` all the time
