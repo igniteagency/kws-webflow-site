@@ -11,20 +11,24 @@ export function announcementTracker() {
   const heroSection = document.querySelector('.section_hero, .section_hero-text');
 
   const DIALOG_ANIMATION_DURATION_SECONDS = 0.5;
-  const DIALOG_CONTENT_ANIMATION_DURATION_SECONDS = 0.25;
+  const DIALOG_CONTENT_ANIMATION_DURATION_SECONDS = 0.2;
 
   if (!dialogComponentEl) {
     return;
   }
 
-  let dialogHeight = dialogComponentEl.clientHeight;
-  let dialogWidth = dialogComponentEl.clientWidth;
-
   if (Cookies.get(`announcement-closed`) === 'true') {
     console.debug(`Announcement item already closed`);
-    dialogComponentEl.close();
     return;
   }
+
+  dialogComponentEl.show();
+
+  let dialogHeight = dialogComponentEl.scrollHeight;
+  let dialogWidth = dialogComponentEl.scrollWidth;
+
+  dialogComponentEl.style.width = `${dialogWidth}px`;
+  dialogComponentEl.style.height = `${dialogHeight}px`;
 
   let isCollapsed = false;
 
@@ -67,6 +71,19 @@ export function announcementTracker() {
     });
   });
 
+  window.Webflow?.resize.on(() => {
+    if (!isCollapsed) {
+      console.debug('value recalc');
+      // Temporarily remove size constraints
+      dialogComponentEl.style.width = '';
+      dialogComponentEl.style.height = '';
+
+      // Get natural dimensions
+      dialogHeight = dialogComponentEl.scrollHeight;
+      dialogWidth = dialogComponentEl.scrollWidth;
+    }
+  });
+
   function animateDialog(isCollapsed: boolean) {
     if (isCollapsed) {
       window.gsap.to(dialogComponentEl, {
@@ -92,27 +109,33 @@ export function announcementTracker() {
         },
       });
     } else {
-      window.gsap.to(dialogComponentEl, {
+      const tl = window.gsap.timeline();
+      tl.to(
+        ANNOUNCEMENT_BAR_NOTICE_ICON_SELECTOR,
+        {
+          duration: DIALOG_CONTENT_ANIMATION_DURATION_SECONDS,
+          opacity: 0,
+          display: 'none',
+        },
+        '-=0.1'
+      );
+      tl.to(dialogComponentEl, {
         duration: DIALOG_ANIMATION_DURATION_SECONDS,
         width: dialogWidth,
         height: dialogHeight,
         borderRadius: '0',
-        onStart: () => {
-          const tl = window.gsap.timeline();
-          tl.to(ANNOUNCEMENT_BAR_NOTICE_ICON_SELECTOR, {
-            duration: DIALOG_CONTENT_ANIMATION_DURATION_SECONDS,
-            opacity: 0,
-            display: 'none',
-          });
-          tl.to(ANNOUNCEMENT_BAR_LIST_WRAPPER_SELECTOR, {
-            duration: DIALOG_CONTENT_ANIMATION_DURATION_SECONDS,
-            opacity: 1,
-            display: 'block',
-          });
-          tl.eventCallback('onComplete', () => {
-            tl.kill();
-          });
+      });
+      tl.to(
+        ANNOUNCEMENT_BAR_LIST_WRAPPER_SELECTOR,
+        {
+          duration: DIALOG_CONTENT_ANIMATION_DURATION_SECONDS,
+          opacity: 1,
+          display: 'block',
         },
+        '-=0.15'
+      );
+      tl.eventCallback('onComplete', () => {
+        tl.kill();
       });
     }
   }
