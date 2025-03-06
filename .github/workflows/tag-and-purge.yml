@@ -30,8 +30,8 @@ jobs:
         run: |
           base_url="https://cdn.jsdelivr.net/gh/${{ github.repository }}"
           urls=""
-          if [ -d "dist/prod" ]; then
-            for file in $(find dist/prod -type f -name "*.js"); do
+          if [ -d "dist" ]; then
+            for file in $(find dist -type f -name "*.js"); do
               urls+="${base_url}/${file},"
             done
           fi
