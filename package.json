@@ -12,29 +12,29 @@
     "build": "cross-env NODE_ENV=production bun run ./bin/build.js"
   },
   "devDependencies": {
-    "@finsweet/eslint-config": "^2.0.6",
-    "@finsweet/tsconfig": "^1.3.3",
+    "@finsweet/eslint-config": "^2.0.7",
+    "@finsweet/tsconfig": "^1.4.2",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
-    "@typescript-eslint/eslint-plugin": "^7.7",
-    "@typescript-eslint/parser": "^7.7",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
     "cross-env": "^7.0.3",
-    "esbuild": "^0.20.1",
-    "eslint": "^9.1",
+    "esbuild": "^0.20.2",
+    "eslint": "^9.21.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-prettier": "^5.2.3",
     "fs": "^0.0.1-security",
     "path": "^0.12.7",
-    "prettier": "^3.2.4",
+    "prettier": "^3.5.3",
     "tiny-glob": "^0.2.9",
     "@types/js-cookie": "^3.0.6",
-    "typescript": "^5.3.3"
+    "typescript": "^5.8.2"
   },
   "dependencies": {
     "@finsweet/ts-utils": "^0.40.0",
-    "alpinejs": "^3.14.3",
+    "alpinejs": "^3.14.8",
     "countup.js": "^2.8.0",
-    "gsap": "^3.12.5",
+    "gsap": "^3.12.7",
     "js-cookie": "^3.0.5",
-    "swiper": "^11.1.4"
+    "swiper": "^11.2.5"
   }
 }
