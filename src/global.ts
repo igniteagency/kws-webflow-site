@@ -7,6 +7,7 @@ import { announcementTracker } from '$components/announcements';
 import { initBGColorChange } from '$components/bg-color-change';
 import { enrolmentDownloadForm } from '$components/enrolmentDownloadForm';
 import { initNavScripts } from '$components/nav';
+import { setCurrentYear } from '$utils/current-year';
 import { fadeUp } from '$utils/fade';
 
 window.gsap = gsap;
@@ -25,6 +26,8 @@ window.Webflow?.push(() => {
   announcementTracker();
 
   fadeUp();
+
+  setCurrentYear();
 
   window.Alpine.start();
 });
