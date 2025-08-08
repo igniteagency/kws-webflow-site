@@ -8,6 +8,7 @@ import { initBGColorChange } from '$components/bg-color-change';
 import { enrolmentDownloadForm } from '$components/enrolmentDownloadForm';
 import { initNavScripts } from '$components/nav';
 import { setCurrentYear } from '$utils/current-year';
+import handleExternalLinks from '$utils/external-link';
 import { fadeUp } from '$utils/fade';
 
 window.gsap = gsap;
@@ -28,6 +29,8 @@ window.Webflow?.push(() => {
   fadeUp();
 
   setCurrentYear();
+
+  handleExternalLinks();
 
   window.Alpine.start();
 });
